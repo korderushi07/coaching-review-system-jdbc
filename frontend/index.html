@@ -2,213 +2,455 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Coaching Review System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoachRate — Find Your Perfect Coaching</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Fraunces:ital,wght@0,700;0,900;1,700;1,900&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: Arial, sans-serif; background: #f0f2f5; color: #333; }
-
-        header {
-          background: #4f46e5; color: white;
-          padding: 20px; text-align: center;
-          font-size: 24px; font-weight: bold;
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        :root{
+          --bg:#080b14;--bg2:#0d1120;--surface:#111827;--surface2:#1a2235;
+          --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+          --text:#f0f4ff;--text2:#8b95b0;--text3:#5a6480;
+          --blue:#4f8ef7;--blue2:#6ba3ff;--violet:#8b5cf6;
+          --teal:#06d6a0;--amber:#fbbf24;--pink:#f472b6;--red:#f87171;
+          --r:14px;--r2:20px;
         }
+        html{scroll-behavior:smooth}
+        body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
 
-        .tabs {
-          display: flex; justify-content: center;
-          gap: 10px; padding: 20px; flex-wrap: wrap;
+        .aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+        .aurora-blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:0.16;animation:drift 22s ease-in-out infinite alternate;}
+        .aurora-blob:nth-child(1){width:700px;height:700px;background:radial-gradient(circle,#4f8ef7,transparent);top:-200px;left:-200px;animation-delay:0s;}
+        .aurora-blob:nth-child(2){width:600px;height:600px;background:radial-gradient(circle,#8b5cf6,transparent);top:30%;right:-150px;animation-delay:-8s;}
+        .aurora-blob:nth-child(3){width:500px;height:500px;background:radial-gradient(circle,#06d6a0,transparent);bottom:-100px;left:30%;animation-delay:-16s;}
+        @keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(60px,50px) scale(1.12)}}
+
+        body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+          background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);
+          background-size:60px 60px;}
+
+        nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;
+          padding:0 44px;height:68px;background:rgba(8,11,20,0.75);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);}
+        .nav-brand{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-size:22px;font-weight:900;color:var(--text);text-decoration:none;cursor:pointer;}
+        .brand-icon{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--blue),var(--violet));
+          display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 0 24px rgba(79,142,247,0.45);}
+        .nav-tabs{display:flex;gap:2px;}
+        .nav-tab{padding:8px 16px;border:none;background:transparent;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;
+          color:var(--text2);cursor:pointer;border-radius:8px;transition:all 0.2s;letter-spacing:0.2px;}
+        .nav-tab:hover{color:var(--text);background:rgba(255,255,255,0.06);}
+        .nav-tab.active{color:var(--blue2);background:rgba(79,142,247,0.1);}
+        .nav-cta{padding:9px 22px;background:linear-gradient(135deg,var(--blue),var(--violet));border:none;border-radius:10px;
+          font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;color:white;cursor:pointer;transition:all 0.2s;
+          box-shadow:0 4px 20px rgba(79,142,247,0.3);}
+        .nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 30px rgba(79,142,247,0.5);}
+
+        .panel{display:none;animation:panelIn 0.4s cubic-bezier(0.22,1,0.36,1);}
+        .panel.active{display:block;}
+        @keyframes panelIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+        /* HERO */
+        .hero{position:relative;z-index:1;padding:148px 60px 80px;max-width:1280px;margin:0 auto;}
+        .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 16px 6px 8px;
+          background:rgba(79,142,247,0.1);border:1px solid rgba(79,142,247,0.25);border-radius:100px;margin-bottom:28px;
+          font-size:12px;font-weight:600;color:var(--blue2);letter-spacing:0.5px;}
+        .pulse-dot{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal);animation:pulse 2s ease infinite;}
+        @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+        .hero h1{font-family:'Fraunces',serif;font-size:clamp(44px,6vw,78px);font-weight:900;line-height:1.02;letter-spacing:-3px;margin-bottom:22px;}
+        .grad{background:linear-gradient(135deg,var(--blue2),var(--violet),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        .italic{font-style:italic;}
+        .hero-sub{font-size:18px;color:var(--text2);line-height:1.7;max-width:540px;margin-bottom:44px;font-weight:400;}
+        .hero-btns{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:64px;}
+
+        .btn-glow{padding:14px 32px;background:linear-gradient(135deg,var(--blue),var(--violet));border:none;border-radius:12px;
+          font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:white;cursor:pointer;transition:all 0.25s;
+          box-shadow:0 4px 28px rgba(79,142,247,0.35);display:inline-flex;align-items:center;gap:8px;}
+        .btn-glow:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(79,142,247,0.55);}
+        .btn-ghost{padding:14px 32px;background:rgba(255,255,255,0.05);border:1px solid var(--border2);border-radius:12px;
+          font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;color:var(--text);cursor:pointer;transition:all 0.25s;
+          display:inline-flex;align-items:center;gap:8px;}
+        .btn-ghost:hover{background:rgba(255,255,255,0.09);border-color:rgba(255,255,255,0.22);transform:translateY(-1px);}
+
+        .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:64px;}
+        .stat-chip{display:flex;align-items:center;gap:14px;padding:18px 22px;
+          background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:16px;
+          backdrop-filter:blur(10px);transition:all 0.25s;}
+        .stat-chip:hover{background:rgba(255,255,255,0.06);border-color:var(--border2);transform:translateY(-2px);}
+        .stat-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+        .si-b{background:rgba(79,142,247,0.15);}
+        .si-a{background:rgba(251,191,36,0.15);}
+        .si-t{background:rgba(6,214,160,0.15);}
+        .si-v{background:rgba(139,92,246,0.15);}
+        .stat-val{font-size:26px;font-weight:800;color:var(--text);line-height:1;}
+        .stat-lbl{font-size:11px;color:var(--text3);font-weight:500;margin-top:3px;letter-spacing:0.3px;text-transform:uppercase;}
+
+        .features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+        .feat{padding:28px 26px;border-radius:var(--r2);background:rgba(255,255,255,0.02);border:1px solid var(--border);transition:all 0.25s;}
+        .feat:hover{background:rgba(255,255,255,0.05);border-color:var(--border2);transform:translateY(-3px);}
+        .feat-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:18px;}
+        .feat h3{font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;}
+        .feat p{font-size:13px;color:var(--text3);line-height:1.65;}
+
+        /* CONTENT */
+        .content{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:44px 60px 100px;}
+        .sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:36px;flex-wrap:wrap;gap:16px;}
+        .sec-title{font-family:'Fraunces',serif;font-size:34px;font-weight:700;letter-spacing:-1px;color:var(--text);}
+        .sec-sub{font-size:14px;color:var(--text3);margin-top:5px;}
+
+        /* GLASS */
+        .glass{background:rgba(17,24,39,0.65);border:1px solid var(--border);border-radius:var(--r2);backdrop-filter:blur(20px);}
+        .form-wrap{max-width:740px;}
+        .form-inner{padding:44px;}
+        .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+        .fg{display:flex;flex-direction:column;gap:8px;}
+        .fg.full{grid-column:1/-1;}
+        .fg label{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3);}
+        .fg input,.fg textarea{padding:13px 16px;background:rgba(255,255,255,0.04);border:1.5px solid var(--border);
+          border-radius:10px;font-family:'Outfit',sans-serif;font-size:14px;color:var(--text);outline:none;transition:all 0.2s;}
+        .fg input::placeholder,.fg textarea::placeholder{color:var(--text3);}
+        .fg input:focus,.fg textarea:focus{border-color:var(--blue);background:rgba(79,142,247,0.06);box-shadow:0 0 0 3px rgba(79,142,247,0.12);}
+        .fg textarea{resize:vertical;min-height:110px;}
+
+        .star-row{display:flex;gap:6px;}
+        .star-btn{font-size:28px;cursor:pointer;color:rgba(255,255,255,0.1);background:none;border:none;transition:all 0.15s;line-height:1;padding:2px;}
+        .star-btn.lit{color:var(--amber);text-shadow:0 0 14px rgba(251,191,36,0.65);}
+        .star-btn:hover{transform:scale(1.18);}
+
+        .submit-btn{padding:14px 36px;background:linear-gradient(135deg,var(--blue),var(--violet));border:none;border-radius:12px;
+          font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:white;cursor:pointer;transition:all 0.25s;
+          box-shadow:0 4px 24px rgba(79,142,247,0.3);display:inline-flex;align-items:center;gap:8px;margin-top:8px;}
+        .submit-btn:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(79,142,247,0.48);}
+        .submit-btn:disabled{opacity:0.55;cursor:not-allowed;transform:none;}
+
+        .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px;}
+        .rcard{background:rgba(17,24,39,0.75);border:1px solid var(--border);border-radius:var(--r2);padding:28px;
+          transition:all 0.3s;position:relative;overflow:hidden;}
+        .rcard::before{content:'';position:absolute;inset:0;border-radius:var(--r2);
+          background:linear-gradient(135deg,rgba(79,142,247,0.07),rgba(139,92,246,0.04));opacity:0;transition:opacity 0.3s;pointer-events:none;}
+        .rcard:hover{border-color:rgba(79,142,247,0.32);transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,0.45),0 0 0 1px rgba(79,142,247,0.1);}
+        .rcard:hover::before{opacity:1;}
+        .rcard-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;}
+        .rcard-id{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);
+          background:rgba(255,255,255,0.05);padding:4px 10px;border-radius:6px;}
+        .rcard-stars{display:flex;gap:2px;}
+        .s-lit{font-size:13px;color:var(--amber);}
+        .s-dim{font-size:13px;color:rgba(255,255,255,0.1);}
+        .rcard-coaching{font-family:'Fraunces',serif;font-size:21px;font-weight:700;color:var(--text);margin-bottom:6px;letter-spacing:-0.5px;}
+        .rcard-faculty{font-size:12px;font-weight:600;color:var(--teal);margin-bottom:16px;display:flex;align-items:center;gap:6px;}
+        .rcard-faculty::before{content:'';width:16px;height:1.5px;background:var(--teal);border-radius:2px;display:inline-block;}
+        .rcard-review{font-size:13px;color:var(--text2);line-height:1.75;margin-bottom:22px;padding:14px 14px 14px 16px;
+          background:rgba(255,255,255,0.03);border-radius:10px;border-left:2px solid rgba(79,142,247,0.35);}
+        .rcard-footer{display:flex;align-items:center;justify-content:space-between;}
+        .rcard-student{display:flex;align-items:center;gap:10px;}
+        .avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--violet));
+          display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;flex-shrink:0;}
+        .student-name{font-size:13px;font-weight:600;color:var(--text);}
+        .del-btn{padding:7px 14px;background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.2);border-radius:8px;
+          font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;color:var(--red);cursor:pointer;transition:all 0.2s;}
+        .del-btn:hover{background:rgba(248,113,113,0.2);border-color:var(--red);}
+
+        .compact-glass{max-width:480px;padding:40px;}
+        .search-wrap{display:flex;gap:12px;margin-bottom:36px;max-width:580px;}
+        .search-wrap input{flex:1;padding:14px 20px;background:rgba(255,255,255,0.05);border:1.5px solid var(--border);border-radius:12px;
+          font-family:'Outfit',sans-serif;font-size:14px;color:var(--text);outline:none;transition:all 0.2s;}
+        .search-wrap input::placeholder{color:var(--text3);}
+        .search-wrap input:focus{border-color:var(--blue);background:rgba(79,142,247,0.05);box-shadow:0 0 0 3px rgba(79,142,247,0.12);}
+
+        .empty{text-align:center;padding:100px 20px;display:flex;flex-direction:column;align-items:center;gap:14px;}
+        .empty-glyph{width:80px;height:80px;border-radius:20px;background:rgba(255,255,255,0.04);border:1px solid var(--border);
+          display:flex;align-items:center;justify-content:center;font-size:36px;margin-bottom:4px;}
+        .empty h3{font-family:'Fraunces',serif;font-size:22px;color:var(--text);letter-spacing:-0.5px;}
+        .empty p{font-size:14px;color:var(--text3);max-width:300px;}
+
+        .toast{position:fixed;bottom:32px;right:32px;z-index:999;padding:14px 20px;border-radius:14px;font-size:13px;font-weight:600;
+          display:flex;align-items:center;gap:10px;transform:translateY(120%);opacity:0;
+          transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);max-width:340px;backdrop-filter:blur(20px);}
+        .toast.show{transform:translateY(0);opacity:1;}
+        .toast.ok{background:rgba(6,214,160,0.15);border:1px solid rgba(6,214,160,0.3);color:var(--teal);}
+        .toast.err{background:rgba(248,113,113,0.15);border:1px solid rgba(248,113,113,0.3);color:var(--red);}
+
+        .refresh-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:rgba(6,214,160,0.1);
+          border:1px solid rgba(6,214,160,0.25);border-radius:10px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;
+          color:var(--teal);cursor:pointer;transition:all 0.2s;margin-bottom:32px;}
+        .refresh-btn:hover{background:rgba(6,214,160,0.18);transform:translateY(-1px);}
+
+        .spin{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);border-top-color:white;
+          animation:spinning 0.7s linear infinite;display:inline-block;}
+        @keyframes spinning{to{transform:rotate(360deg)}}
+
+        footer{position:relative;z-index:1;background:rgba(8,11,20,0.96);border-top:1px solid var(--border);padding:56px 60px 40px;}
+        .footer-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;margin-bottom:32px;}
+        .footer-brand{font-family:'Fraunces',serif;font-size:24px;font-weight:900;color:var(--text);}
+        .footer-tag{font-size:13px;color:var(--text3);margin-top:4px;}
+        .footer-links{display:flex;gap:24px;}
+        .footer-links a{font-size:13px;color:var(--text3);text-decoration:none;transition:color 0.2s;cursor:pointer;}
+        .footer-links a:hover{color:var(--text);}
+        .footer-copy{text-align:center;font-size:11px;color:var(--text3);max-width:1280px;margin:0 auto;}
+
+        @media(max-width:960px){
+          nav{padding:0 20px;}
+          .nav-tabs .nav-tab:nth-child(n+5){display:none;}
+          .hero{padding:110px 20px 60px;}
+          .stats-row{grid-template-columns:1fr 1fr;}
+          .features{grid-template-columns:1fr;}
+          .content{padding:30px 20px 80px;}
+          .form-grid{grid-template-columns:1fr;}
+          .form-inner{padding:24px;}
+          footer{padding:40px 20px 30px;}
         }
-
-        .tab-btn {
-          padding: 10px 20px; border: none;
-          background: #e0e7ff; border-radius: 8px;
-          cursor: pointer; font-size: 14px;
-        }
-
-        .tab-btn.active { background: #4f46e5; color: white; }
-
-        .section { display: none; max-width: 800px; margin: 0 auto; padding: 20px; }
-        .section.active { display: block; }
-
-        .card {
-          background: white; border-radius: 12px;
-          padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        input, textarea {
-          width: 100%; padding: 10px;
-          margin: 8px 0 16px; border: 1px solid #ddd;
-          border-radius: 8px; font-size: 14px;
-        }
-
-        label { font-weight: bold; font-size: 14px; }
-
-        button.submit-btn {
-          background: #4f46e5; color: white;
-          padding: 12px 24px; border: none;
-          border-radius: 8px; cursor: pointer;
-          font-size: 15px; width: 100%;
-        }
-
-        button.submit-btn:hover { background: #3730a3; }
-
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th { background: #4f46e5; color: white; padding: 10px; }
-        td { padding: 10px; border-bottom: 1px solid #eee; text-align: center; }
-        tr:hover { background: #f9f9f9; }
-
-        .action-btn {
-          padding: 6px 12px; border: none;
-          border-radius: 6px; cursor: pointer;
-        }
-        .del-btn { background: #fee2e2; color: #dc2626; }
-        .msg { margin-top: 12px; color: green; font-weight: bold; }
     </style>
 </head>
 <body>
+<div class="aurora">
+    <div class="aurora-blob"></div>
+    <div class="aurora-blob"></div>
+    <div class="aurora-blob"></div>
+</div>
 
-<header>🎓 Coaching Review System</header>
+<div class="toast" id="toast">
+    <span id="t-icon"></span><span id="t-msg"></span>
+</div>
 
-<div class="tabs">
-    <button class="tab-btn active" onclick="showTab('add')">➕ Add Review</button>
-    <button class="tab-btn" onclick="showTab('view')">📋 View Reviews</button>
-    <button class="tab-btn" onclick="showTab('update')">✏️ Update Review</button>
-    <button class="tab-btn" onclick="showTab('delete')">🗑️ Delete Review</button>
-    <button class="tab-btn" onclick="showTab('search')">🔍 Search</button>
+<nav>
+    <div class="nav-brand" onclick="goPanel('home',null)">
+        <div class="brand-icon">🎓</div>CoachRate
+    </div>
+    <div class="nav-tabs">
+        <button class="nav-tab active" onclick="goPanel('home',this)">Home</button>
+        <button class="nav-tab" onclick="goPanel('add',this)">Add Review</button>
+        <button class="nav-tab" onclick="goPanel('view',this);loadReviews()">All Reviews</button>
+        <button class="nav-tab" onclick="goPanel('update',this)">Update</button>
+        <button class="nav-tab" onclick="goPanel('delete',this)">Delete</button>
+        <button class="nav-tab" onclick="goPanel('search',this)">Search</button>
+    </div>
+    <button class="nav-cta" onclick="goPanel('add',document.querySelectorAll('.nav-tab')[1])">+ Write Review</button>
+</nav>
+
+<!-- HOME -->
+<div class="panel active" id="panel-home">
+    <div class="hero">
+        <div class="hero-eyebrow"><span class="pulse-dot"></span>India's Trusted Coaching Review Platform</div>
+        <h1>Discover the <span class="grad italic">Best</span><br>Coaching for You</h1>
+        <p class="hero-sub">Real reviews from real students. Find top-rated coaching institutes, compare faculties, and make smarter decisions about your education journey.</p>
+        <div class="hero-btns">
+            <button class="btn-glow" onclick="goPanel('view',document.querySelectorAll('.nav-tab')[2]);loadReviews()">✦ Explore Reviews</button>
+            <button class="btn-ghost" onclick="goPanel('add',document.querySelectorAll('.nav-tab')[1])">✎ Write a Review</button>
+        </div>
+        <div class="stats-row">
+            <div class="stat-chip"><div class="stat-icon si-b">📝</div><div><div class="stat-val" id="h-total">—</div><div class="stat-lbl">Reviews</div></div></div>
+            <div class="stat-chip"><div class="stat-icon si-a">⭐</div><div><div class="stat-val" id="h-avg">—</div><div class="stat-lbl">Avg Rating</div></div></div>
+            <div class="stat-chip"><div class="stat-icon si-t">🏫</div><div><div class="stat-val" id="h-inst">—</div><div class="stat-lbl">Institutes</div></div></div>
+            <div class="stat-chip"><div class="stat-icon si-v">👨‍🏫</div><div><div class="stat-val" id="h-fac">—</div><div class="stat-lbl">Faculty</div></div></div>
+        </div>
+        <div class="features">
+            <div class="feat"><div class="feat-icon" style="background:rgba(79,142,247,0.12)">🔍</div><h3>Discover Institutes</h3><p>Search coaching centres by name, subject, or faculty. Pinpoint the perfect fit for your goals.</p></div>
+            <div class="feat"><div class="feat-icon" style="background:rgba(6,214,160,0.12)">✅</div><h3>Verified Reviews</h3><p>Every review is from a real student. Get honest, unfiltered insights before you enrol.</p></div>
+            <div class="feat"><div class="feat-icon" style="background:rgba(139,92,246,0.12)">📊</div><h3>Smart Ratings</h3><p>Compare institutes with detailed star ratings. Data-driven quality metrics you can trust.</p></div>
+        </div>
+    </div>
 </div>
 
 <!-- ADD -->
-<div id="add" class="section active">
-    <div class="card">
-        <h2>Add New Review</h2><br>
-        <label>Review ID</label>
-        <input type="number" id="a-id" placeholder="e.g. 101">
-        <label>Coaching Name</label>
-        <input type="text" id="a-coaching" placeholder="e.g. Aakash Institute">
-        <label>Faculty Name</label>
-        <input type="text" id="a-faculty" placeholder="e.g. Dr. Sharma">
-        <label>Rating (1-5)</label>
-        <input type="number" id="a-rating" min="1" max="5">
-        <label>Review</label>
-        <textarea id="a-review" rows="3" placeholder="Write your review..."></textarea>
-        <label>Student Name</label>
-        <input type="text" id="a-student" placeholder="Your name">
-        <button class="submit-btn" onclick="addReview()">Add Review</button>
-        <p class="msg" id="add-msg"></p>
+<div class="panel" id="panel-add">
+    <div class="content">
+        <div class="sec-hdr">
+            <div><div class="sec-title">Share Your Experience</div><div class="sec-sub">Your honest review helps thousands of students choose better.</div></div>
+        </div>
+        <div class="glass form-wrap">
+            <div class="form-inner">
+                <div class="form-grid">
+                    <div class="fg"><label>Review ID</label><input type="number" id="a-id" placeholder="e.g. 101"></div>
+                    <div class="fg">
+                        <label>Your Rating</label>
+                        <div class="star-row" id="stars-add">
+                            <button class="star-btn" onclick="setR('add',1)">★</button>
+                            <button class="star-btn" onclick="setR('add',2)">★</button>
+                            <button class="star-btn" onclick="setR('add',3)">★</button>
+                            <button class="star-btn" onclick="setR('add',4)">★</button>
+                            <button class="star-btn" onclick="setR('add',5)">★</button>
+                        </div>
+                        <input type="hidden" id="a-rating" value="0">
+                    </div>
+                    <div class="fg"><label>Coaching Institute</label><input type="text" id="a-coaching" placeholder="e.g. Aakash Institute"></div>
+                    <div class="fg"><label>Faculty Name</label><input type="text" id="a-faculty" placeholder="e.g. Dr. Ramesh Sharma"></div>
+                    <div class="fg full"><label>Your Review</label><textarea id="a-review" placeholder="Describe your experience — teaching style, study material, doubt sessions, atmosphere..."></textarea></div>
+                    <div class="fg"><label>Your Name</label><input type="text" id="a-student" placeholder="Your name"></div>
+                    <div class="fg" style="justify-content:flex-end;"><button class="submit-btn" id="add-btn" onclick="addReview()" style="align-self:flex-end;margin-top:auto;">Submit Review →</button></div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <!-- VIEW -->
-<div id="view" class="section">
-    <div class="card">
-        <h2>All Reviews</h2>
-        <button class="submit-btn" onclick="loadReviews()" style="width:auto;padding:10px 20px;margin-bottom:16px">
-            🔄 Load Reviews
-        </button>
-        <table>
-            <thead>
-            <tr><th>ID</th><th>Coaching</th><th>Faculty</th><th>Rating</th><th>Review</th><th>Student</th></tr>
-            </thead>
-            <tbody id="reviews-table"></tbody>
-        </table>
+<div class="panel" id="panel-view">
+    <div class="content">
+        <div class="sec-hdr">
+            <div><div class="sec-title">All Reviews</div><div class="sec-sub">See what students are saying across institutes.</div></div>
+            <button class="refresh-btn" onclick="loadReviews()">↺ Refresh</button>
+        </div>
+        <div id="view-container"><div class="empty"><div class="empty-glyph">📋</div><h3>No reviews loaded</h3><p>Click Refresh to fetch all reviews.</p></div></div>
     </div>
 </div>
 
 <!-- UPDATE -->
-<div id="update" class="section">
-    <div class="card">
-        <h2>Update Review Rating</h2><br>
-        <label>Review ID</label>
-        <input type="number" id="u-id" placeholder="Enter Review ID">
-        <label>New Rating (1-5)</label>
-        <input type="number" id="u-rating" min="1" max="5">
-        <button class="submit-btn" onclick="updateReview()">Update Rating</button>
-        <p class="msg" id="update-msg"></p>
+<div class="panel" id="panel-update">
+    <div class="content">
+        <div class="sec-hdr"><div><div class="sec-title">Update Rating</div><div class="sec-sub">Change the star rating for an existing review.</div></div></div>
+        <div class="glass compact-glass">
+            <div class="fg" style="margin-bottom:22px;"><label>Review ID</label><input type="number" id="u-id" placeholder="Enter Review ID"></div>
+            <div class="fg" style="margin-bottom:32px;">
+                <label>New Rating</label>
+                <div class="star-row" id="stars-update">
+                    <button class="star-btn" onclick="setR('update',1)">★</button>
+                    <button class="star-btn" onclick="setR('update',2)">★</button>
+                    <button class="star-btn" onclick="setR('update',3)">★</button>
+                    <button class="star-btn" onclick="setR('update',4)">★</button>
+                    <button class="star-btn" onclick="setR('update',5)">★</button>
+                </div>
+                <input type="hidden" id="u-rating" value="0">
+            </div>
+            <button class="submit-btn" onclick="updateReview()">Update Rating →</button>
+        </div>
     </div>
 </div>
 
 <!-- DELETE -->
-<div id="delete" class="section">
-    <div class="card">
-        <h2>Delete a Review</h2><br>
-        <label>Review ID</label>
-        <input type="number" id="d-id" placeholder="Enter Review ID to delete">
-        <button class="submit-btn" style="background:#dc2626" onclick="deleteReview()">Delete Review</button>
-        <p class="msg" id="delete-msg"></p>
+<div class="panel" id="panel-delete">
+    <div class="content">
+        <div class="sec-hdr"><div><div class="sec-title">Remove a Review</div><div class="sec-sub">Permanently delete a review from the database.</div></div></div>
+        <div class="glass compact-glass">
+            <div class="fg" style="margin-bottom:32px;"><label>Review ID to Delete</label><input type="number" id="d-id" placeholder="Enter Review ID"></div>
+            <button onclick="deleteReview()" style="padding:14px 32px;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.25);border-radius:12px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:var(--red);cursor:pointer;transition:background 0.2s;display:inline-flex;align-items:center;gap:8px;" onmouseover="this.style.background='rgba(248,113,113,0.2)'" onmouseout="this.style.background='rgba(248,113,113,0.1)'">🗑 Delete Review</button>
+        </div>
     </div>
 </div>
 
 <!-- SEARCH -->
-<div id="search" class="section">
-    <div class="card">
-        <h2>Search by Coaching Name</h2><br>
-        <label>Coaching Name</label>
-        <input type="text" id="s-name" placeholder="e.g. Aakash Institute">
-        <button class="submit-btn" onclick="searchReviews()">Search</button>
-        <table style="margin-top:16px">
-            <thead>
-            <tr><th>ID</th><th>Coaching</th><th>Faculty</th><th>Rating</th><th>Review</th><th>Student</th></tr>
-            </thead>
-            <tbody id="search-table"></tbody>
-        </table>
+<div class="panel" id="panel-search">
+    <div class="content">
+        <div class="sec-hdr"><div><div class="sec-title">Search Reviews</div><div class="sec-sub">Find all reviews for a specific coaching institute.</div></div></div>
+        <div class="search-wrap">
+            <input type="text" id="s-name" placeholder="Search by coaching name...">
+            <button class="submit-btn" onclick="searchReviews()" style="margin-top:0;white-space:nowrap;">Search →</button>
+        </div>
+        <div id="search-container"></div>
     </div>
 </div>
 
+<footer>
+    <div class="footer-inner">
+        <div><div class="footer-brand">CoachRate 🎓</div><div class="footer-tag">Empowering students with honest coaching reviews</div></div>
+        <div class="footer-links">
+            <a onclick="goPanel('view',document.querySelectorAll('.nav-tab')[2]);loadReviews()">Reviews</a>
+            <a onclick="goPanel('add',document.querySelectorAll('.nav-tab')[1])">Write Review</a>
+            <a onclick="goPanel('search',document.querySelectorAll('.nav-tab')[5])">Search</a>
+        </div>
+    </div>
+    <div class="footer-copy">© 2026 CoachRate · Built with Spring Boot + MySQL · All rights reserved</div>
+</footer>
+
 <script>
-    const API = "http://localhost:8080/api/reviews";
+    const API='http://localhost:8080/api/reviews';
+    const R={add:0,update:0};
 
-    function showTab(name) {
-      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById(name).classList.add('active');
-      event.target.classList.add('active');
+    function goPanel(name,btn){
+      document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+      document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
+      document.getElementById('panel-'+name).classList.add('active');
+      if(btn&&btn.classList&&btn.classList.contains('nav-tab'))btn.classList.add('active');
+      window.scrollTo({top:0,behavior:'smooth'});
     }
-
-    async function addReview() {
-      const review = {
-        id: parseInt(document.getElementById('a-id').value),
-        coachingName: document.getElementById('a-coaching').value,
-        facultyName: document.getElementById('a-faculty').value,
-        rating: parseInt(document.getElementById('a-rating').value),
-        review: document.getElementById('a-review').value,
-        studentName: document.getElementById('a-student').value
-      };
-      await fetch(API, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(review) });
-      document.getElementById('add-msg').textContent = '✅ Review Added Successfully!';
+    function setR(ctx,val){
+      R[ctx]=val;
+      document.getElementById(ctx==='add'?'a-rating':'u-rating').value=val;
+      document.querySelectorAll(`#stars-${ctx} .star-btn`).forEach((b,i)=>b.classList.toggle('lit',i<val));
     }
-
-    async function loadReviews() {
-      const res = await fetch(API);
-      const data = await res.json();
-      const tbody = document.getElementById('reviews-table');
-      tbody.innerHTML = data.map(r =>
-        `<tr><td>${r.id}</td><td>${r.coachingName}</td><td>${r.facultyName}</td>
-         <td>${r.rating}⭐</td><td>${r.review}</td><td>${r.studentName}</td></tr>`
-      ).join('');
+    function toast(msg,ok=true){
+      const t=document.getElementById('toast');
+      document.getElementById('t-icon').textContent=ok?'✓':'✕';
+      document.getElementById('t-msg').textContent=msg;
+      t.className='toast show '+(ok?'ok':'err');
+      setTimeout(()=>t.className='toast',3200);
     }
-
-    async function updateReview() {
-      const id = document.getElementById('u-id').value;
-      const rating = parseInt(document.getElementById('u-rating').value);
-      await fetch(`${API}/${id}`, { method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify({rating}) });
-      document.getElementById('update-msg').textContent = '✅ Rating Updated!';
+    function starsHtml(r){return[1,2,3,4,5].map(i=>`<span class="${i<=r?'s-lit':'s-dim'}">★</span>`).join('');}
+    function renderCards(data,cid){
+      const c=document.getElementById(cid);
+      if(!data.length){c.innerHTML=`<div class="empty"><div class="empty-glyph">🔍</div><h3>No reviews found</h3><p>Try a different name or add the first review.</p></div>`;return;}
+      c.innerHTML=`<div class="cards-grid">${data.map(r=>`
+        <div class="rcard">
+          <div class="rcard-top"><span class="rcard-id">#${r.id}</span><div class="rcard-stars">${starsHtml(r.rating)}</div></div>
+          <div class="rcard-coaching">${r.coachingName}</div>
+          <div class="rcard-faculty">${r.facultyName}</div>
+          <div class="rcard-review">"${r.review}"</div>
+          <div class="rcard-footer">
+            <div class="rcard-student"><div class="avatar">${(r.studentName||'?')[0].toUpperCase()}</div><span class="student-name">${r.studentName}</span></div>
+            <button class="del-btn" onclick="quickDel(${r.id})">Delete</button>
+          </div>
+        </div>`).join('')}</div>`;
     }
-
-    async function deleteReview() {
-      const id = document.getElementById('d-id').value;
-      await fetch(`${API}/${id}`, { method: 'DELETE' });
-      document.getElementById('delete-msg').textContent = '✅ Review Deleted!';
+    async function addReview(){
+      const id=parseInt(document.getElementById('a-id').value);
+      const cn=document.getElementById('a-coaching').value.trim();
+      const fn=document.getElementById('a-faculty').value.trim();
+      const rt=parseInt(document.getElementById('a-rating').value);
+      const rv=document.getElementById('a-review').value.trim();
+      const sn=document.getElementById('a-student').value.trim();
+      if(!id||!cn||!fn||!rt||!rv||!sn){toast('Fill all fields and select a rating.',false);return;}
+      const btn=document.getElementById('add-btn');
+      btn.innerHTML='<span class="spin"></span> Submitting...';btn.disabled=true;
+      try{
+        const res=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({id,coachingName:cn,facultyName:fn,rating:rt,review:rv,studentName:sn})});
+        if(!res.ok)throw 0;
+        toast('Review submitted! 🎉');
+        ['a-id','a-coaching','a-faculty','a-review','a-student'].forEach(x=>document.getElementById(x).value='');
+        document.getElementById('a-rating').value=0;setR('add',0);
+        loadHeroStats();
+      }catch{toast('Failed — is Spring Boot running on port 8080?',false);}
+      finally{btn.innerHTML='Submit Review →';btn.disabled=false;}
     }
-
-    async function searchReviews() {
-      const name = document.getElementById('s-name').value;
-      const res = await fetch(`${API}/search?name=${name}`);
-      const data = await res.json();
-      const tbody = document.getElementById('search-table');
-      tbody.innerHTML = data.map(r =>
-        `<tr><td>${r.id}</td><td>${r.coachingName}</td><td>${r.facultyName}</td>
-         <td>${r.rating}⭐</td><td>${r.review}</td><td>${r.studentName}</td></tr>`
-      ).join('');
+    async function loadReviews(){
+      const c=document.getElementById('view-container');
+      c.innerHTML=`<div class="empty"><div class="empty-glyph" style="font-size:32px;animation:spinning 1.5s linear infinite">⟳</div><h3>Loading...</h3></div>`;
+      try{renderCards(await(await fetch(API)).json(),'view-container');}
+      catch{c.innerHTML=`<div class="empty"><div class="empty-glyph">⚠️</div><h3>Connection failed</h3><p>Make sure Spring Boot is running on port 8080.</p></div>`;}
     }
+    async function updateReview(){
+      const id=document.getElementById('u-id').value;
+      const rating=parseInt(document.getElementById('u-rating').value);
+      if(!id||!rating){toast('Enter ID and select a rating.',false);return;}
+      try{await fetch(`${API}/${id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({rating})});toast(`Review #${id} updated to ${rating}★`);}
+      catch{toast('Update failed.',false);}
+    }
+    async function deleteReview(){
+      const id=document.getElementById('d-id').value;
+      if(!id){toast('Enter a Review ID.',false);return;}
+      if(!confirm(`Delete Review #${id}? Cannot be undone.`))return;
+      try{await fetch(`${API}/${id}`,{method:'DELETE'});toast(`Review #${id} deleted.`);document.getElementById('d-id').value='';}
+      catch{toast('Delete failed.',false);}
+    }
+    async function quickDel(id){
+      if(!confirm(`Delete Review #${id}?`))return;
+      try{await fetch(`${API}/${id}`,{method:'DELETE'});toast(`Deleted #${id}`);loadReviews();}
+      catch{toast('Failed.',false);}
+    }
+    async function searchReviews(){
+      const name=document.getElementById('s-name').value.trim();
+      if(!name){toast('Enter a coaching name.',false);return;}
+      try{renderCards(await(await fetch(`${API}/search?name=${encodeURIComponent(name)}`)).json(),'search-container');}
+      catch{toast('Search failed.',false);}
+    }
+    async function loadHeroStats(){
+      try{
+        const data=await(await fetch(API)).json();
+        document.getElementById('h-total').textContent=data.length;
+        document.getElementById('h-avg').textContent=data.length?(data.reduce((s,r)=>s+r.rating,0)/data.length).toFixed(1)+'★':'—';
+        document.getElementById('h-inst').textContent=new Set(data.map(r=>r.coachingName)).size;
+        document.getElementById('h-fac').textContent=new Set(data.map(r=>r.facultyName)).size;
+      }catch{}
+    }
+    document.getElementById('s-name').addEventListener('keydown',e=>{if(e.key==='Enter')searchReviews();});
+    loadHeroStats();
 </script>
 </body>
 </html>
