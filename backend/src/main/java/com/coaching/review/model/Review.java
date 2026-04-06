@@ -17,6 +17,7 @@ public class Review {
     private String facultyName;
 
     private int rating;
+    @Column(name = "review_text")
     private String review;
 
     @Column(name = "student_name")
