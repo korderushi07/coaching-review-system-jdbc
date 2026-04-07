@@ -15,6 +15,50 @@
           --teal:#06d6a0;--amber:#fbbf24;--pink:#f472b6;--red:#f87171;
           --r:14px;--r2:20px;
         }
+        [data-theme="light"]{
+          --bg:#f8fafc;--bg2:#e2e8f0;--surface:#ffffff;--surface2:#f1f5f9;
+          --border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.15);
+          --text:#0f172a;--text2:#475569;--text3:#64748b;
+          --blue:#3b82f6;--blue2:#2563eb;--violet:#7c3aed;
+          --teal:#059669;--amber:#d97706;--pink:#db2777;--red:#dc2626;
+        }
+        [data-theme="light"] body::before{background-image:linear-gradient(rgba(0,0,0,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.03) 1px,transparent 1px);}
+        [data-theme="light"] .aurora-blob{opacity: 0.25;}
+        [data-theme="light"] nav{background:rgba(248,250,252,0.85);}
+        [data-theme="light"] footer{background:rgba(248,250,252,0.96);}
+        [data-theme="light"] .glass{background:rgba(255,255,255,0.7);}
+        [data-theme="light"] .rcard{background:rgba(255,255,255,0.85); box-shadow:0 4px 20px rgba(0,0,0,0.03);}
+        [data-theme="light"] .rcard:hover{box-shadow:0 20px 40px rgba(0,0,0,0.08),0 0 0 1px rgba(59,130,246,0.2);}
+        [data-theme="light"] .nav-tab:hover{background:rgba(0,0,0,0.04);}
+        [data-theme="light"] .nav-tab.active { background:rgba(59,130,246,0.1); }
+        [data-theme="light"] .hero-eyebrow { background:rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.25); }
+        [data-theme="light"] .btn-ghost { background:rgba(0,0,0,0.02); border-color:var(--border); }
+        [data-theme="light"] .btn-ghost:hover { background:rgba(0,0,0,0.06); border-color:var(--border2); }
+        [data-theme="light"] .stat-chip { background:rgba(255,255,255,0.8); }
+        [data-theme="light"] .stat-chip:hover { background:rgba(255,255,255,1); }
+        [data-theme="light"] .feat { background:rgba(255,255,255,0.6); }
+        [data-theme="light"] .feat:hover { background:rgba(255,255,255,0.9); }
+        [data-theme="light"] .fg input, [data-theme="light"] .fg textarea { background:rgba(0,0,0,0.02); }
+        [data-theme="light"] .rcard-id { background:rgba(0,0,0,0.06); }
+        [data-theme="light"] .rcard-review { background:rgba(0,0,0,0.02); }
+        [data-theme="light"] .empty-glyph { background:rgba(0,0,0,0.04); }
+        [data-theme="light"] .search-wrap input { background:rgba(0,0,0,0.02); }
+        [data-theme="light"] .s-dim { color:rgba(0,0,0,0.15); }
+        [data-theme="light"] .star-btn { color:rgba(0,0,0,0.15); }
+        [data-theme="light"] .star-btn.lit { color:var(--amber); text-shadow:none; }
+        
+        .theme-switch{position:relative;width:56px;height:30px;padding:0;border:none;background:none;outline:none;}
+        .theme-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,0.1);border:1px solid var(--border);border-radius:30px;transition:.3s;display:flex;align-items:center;justify-content:space-between;padding:0 6px;}
+        .theme-switch:hover .theme-slider{background:rgba(255,255,255,0.15);}
+        [data-theme="light"] .theme-slider{background:rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.15);}
+        [data-theme="light"] .theme-switch:hover .theme-slider{background:rgba(0,0,0,0.09);}
+        .theme-slider::before{position:absolute;content:"";height:22px;width:22px;left:3px;bottom:3px;background:white;border-radius:50%;transition:.4s cubic-bezier(0.4,0,0.2,1);z-index:2;box-shadow:0 2px 4px rgba(0,0,0,0.2);}
+        [data-theme="light"] .theme-slider::before{transform:translateX(26px);box-shadow:0 1px 3px rgba(0,0,0,0.15);}
+        .slider-icon{font-size:12px;z-index:1;line-height:1;user-select:none;}
+        .slider-icon.sun{opacity:0.3;filter:grayscale(100%);}
+        [data-theme="light"] .slider-icon.moon{opacity:0.4;filter:grayscale(100%);}
+        [data-theme="light"] .slider-icon.sun{opacity:1;filter:none;}
+
         html{scroll-behavior:smooth}
         body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;}
 
@@ -89,6 +133,14 @@
         .feat-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:18px;}
         .feat h3{font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;}
         .feat p{font-size:13px;color:var(--text3);line-height:1.65;}
+        
+        .stat-icon svg, .feat-icon svg, .brand-icon svg, .empty-glyph svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+        .brand-icon svg { stroke: white; width: 18px; height: 18px; }
+        .empty-glyph svg { width: 36px; height: 36px; stroke: var(--text3); }
+        .si-b { color: var(--blue); }
+        .si-a { color: var(--amber); }
+        .si-t { color: var(--teal); }
+        .si-v { color: var(--violet); }
 
         /* CONTENT */
         .content{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:148px 60px 100px;}
@@ -212,7 +264,7 @@
 
 <nav>
     <div class="nav-brand" onclick="goPanel('home',null)">
-        <div class="brand-icon">🎓</div>CoachRate
+        <div class="brand-icon"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>CoachRate
     </div>
     <div class="nav-tabs">
         <button class="nav-tab active" onclick="goPanel('home',this)">Home</button>
@@ -222,7 +274,15 @@
         <button class="nav-tab" onclick="goPanel('delete',this)">Delete</button>
         <button class="nav-tab" onclick="goPanel('search',this)">Search</button>
     </div>
-    <button class="nav-cta" onclick="goPanel('add',document.querySelectorAll('.nav-tab')[1])">+ Write Review</button>
+    <div style="display:flex;align-items:center;gap:12px;">
+        <button class="theme-switch" onclick="toggleTheme()" title="Toggle Theme" aria-label="Toggle Theme">
+            <span class="theme-slider">
+                <span class="slider-icon moon">🌙</span>
+                <span class="slider-icon sun">☀️</span>
+            </span>
+        </button>
+        <button class="nav-cta" onclick="goPanel('add',document.querySelectorAll('.nav-tab')[1])">+ Write Review</button>
+    </div>
 </nav>
 
 <!-- HOME -->
@@ -236,15 +296,15 @@
             <button class="btn-ghost" onclick="goPanel('add',document.querySelectorAll('.nav-tab')[1])">✎ Write a Review</button>
         </div>
         <div class="stats-row">
-            <div class="stat-chip"><div class="stat-icon si-b">📝</div><div><div class="stat-val" id="h-total">—</div><div class="stat-lbl">Reviews</div></div></div>
-            <div class="stat-chip"><div class="stat-icon si-a">⭐</div><div><div class="stat-val" id="h-avg">—</div><div class="stat-lbl">Avg Rating</div></div></div>
-            <div class="stat-chip"><div class="stat-icon si-t">🏫</div><div><div class="stat-val" id="h-inst">—</div><div class="stat-lbl">Institutes</div></div></div>
-            <div class="stat-chip"><div class="stat-icon si-v">👨‍🏫</div><div><div class="stat-val" id="h-fac">—</div><div class="stat-lbl">Faculty</div></div></div>
+            <div class="stat-chip"><div class="stat-icon si-b"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div><div><div class="stat-val" id="h-total">—</div><div class="stat-lbl">Reviews</div></div></div>
+            <div class="stat-chip"><div class="stat-icon si-a"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div><div><div class="stat-val" id="h-avg">—</div><div class="stat-lbl">Avg Rating</div></div></div>
+            <div class="stat-chip"><div class="stat-icon si-t"><svg viewBox="0 0 24 24"><path d="M3 21h18"></path><path d="M9 8h1"></path><path d="M9 12h1"></path><path d="M9 16h1"></path><path d="M14 8h1"></path><path d="M14 12h1"></path><path d="M14 16h1"></path><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"></path></svg></div><div><div class="stat-val" id="h-inst">—</div><div class="stat-lbl">Institutes</div></div></div>
+            <div class="stat-chip"><div class="stat-icon si-v"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle><path d="M12 11v8"></path><path d="M8 15h8"></path></svg></div><div><div class="stat-val" id="h-fac">—</div><div class="stat-lbl">Faculty</div></div></div>
         </div>
         <div class="features">
-            <div class="feat"><div class="feat-icon" style="background:rgba(79,142,247,0.12)">🔍</div><h3>Discover Institutes</h3><p>Search coaching centres by name, subject, or faculty. Pinpoint the perfect fit for your goals.</p></div>
-            <div class="feat"><div class="feat-icon" style="background:rgba(6,214,160,0.12)">✅</div><h3>Verified Reviews</h3><p>Every review is from a real student. Get honest, unfiltered insights before you enrol.</p></div>
-            <div class="feat"><div class="feat-icon" style="background:rgba(139,92,246,0.12)">📊</div><h3>Smart Ratings</h3><p>Compare institutes with detailed star ratings. Data-driven quality metrics you can trust.</p></div>
+            <div class="feat"><div class="feat-icon" style="background:rgba(79,142,247,0.12);color:var(--blue)"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div><h3>Discover Institutes</h3><p>Search coaching centres by name, subject, or faculty. Pinpoint the perfect fit for your goals.</p></div>
+            <div class="feat"><div class="feat-icon" style="background:rgba(6,214,160,0.12);color:var(--teal)"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div><h3>Verified Reviews</h3><p>Every review is from a real student. Get honest, unfiltered insights before you enrol.</p></div>
+            <div class="feat"><div class="feat-icon" style="background:rgba(139,92,246,0.12);color:var(--violet)"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></div><h3>Smart Ratings</h3><p>Compare institutes with detailed star ratings. Data-driven quality metrics you can trust.</p></div>
         </div>
     </div>
 </div>
@@ -288,7 +348,7 @@
             <div><div class="sec-title">All Reviews</div><div class="sec-sub">See what students are saying across institutes.</div></div>
             <button class="refresh-btn" onclick="loadReviews()">↺ Refresh</button>
         </div>
-        <div id="view-container"><div class="empty"><div class="empty-glyph">📋</div><h3>No reviews loaded</h3><p>Click Refresh to fetch all reviews.</p></div></div>
+        <div id="view-container"><div class="empty"><div class="empty-glyph"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div><h3>No reviews loaded</h3><p>Click Refresh to fetch all reviews.</p></div></div>
     </div>
 </div>
 
@@ -339,7 +399,7 @@
 
 <footer>
     <div class="footer-inner">
-        <div><div class="footer-brand">CoachRate 🎓</div><div class="footer-tag">Empowering students with honest coaching reviews</div></div>
+        <div><div class="footer-brand" style="display:flex;align-items:center;gap:8px;"><div class="brand-icon" style="width:28px;height:28px;border-radius:8px;"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke-width:2.5;stroke:white;"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>CoachRate</div><div class="footer-tag">Empowering students with honest coaching reviews</div></div>
         <div class="footer-links">
             <a onclick="goPanel('view',document.querySelectorAll('.nav-tab')[2]);loadReviews()">Reviews</a>
             <a onclick="goPanel('add',document.querySelectorAll('.nav-tab')[1])">Write Review</a>
@@ -352,6 +412,21 @@
 <script>
     const API='http://localhost:8080/api/reviews';
     const R={add:0,update:0};
+
+    // Theme Logic
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+        document.documentElement.setAttribute('data-theme', 'light');
+    }
+    function toggleTheme(){
+        const h=document.documentElement;
+        if(h.getAttribute('data-theme')==='light'){
+            h.removeAttribute('data-theme');
+            localStorage.setItem('theme','dark');
+        }else{
+            h.setAttribute('data-theme','light');
+            localStorage.setItem('theme','light');
+        }
+    }
 
     function goPanel(name,btn){
       document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
@@ -375,7 +450,7 @@
     function starsHtml(r){return[1,2,3,4,5].map(i=>`<span class="${i<=r?'s-lit':'s-dim'}">★</span>`).join('');}
     function renderCards(data,cid){
       const c=document.getElementById(cid);
-      if(!data.length){c.innerHTML=`<div class="empty"><div class="empty-glyph">🔍</div><h3>No reviews found</h3><p>Try a different name or add the first review.</p></div>`;return;}
+      if(!data.length){c.innerHTML=`<div class="empty"><div class="empty-glyph"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div><h3>No reviews found</h3><p>Try a different name or add the first review.</p></div>`;return;}
       c.innerHTML=`<div class="cards-grid">${data.map(r=>`
         <div class="rcard">
           <div class="rcard-top"><span class="rcard-id">#${r.id}</span><div class="rcard-stars">${starsHtml(r.rating)}</div></div>
@@ -411,9 +486,9 @@
     }
     async function loadReviews(){
       const c=document.getElementById('view-container');
-      c.innerHTML=`<div class="empty"><div class="empty-glyph" style="font-size:32px;animation:spinning 1.5s linear infinite">⟳</div><h3>Loading...</h3></div>`;
+      c.innerHTML=`<div class="empty"><div class="empty-glyph" style="animation:spinning 1.5s linear infinite;stroke:var(--blue);"><svg viewBox="0 0 24 24"><path d="M21 2v6h-6"></path><path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path><path d="M3 22v-6h6"></path><path d="M21 12a9 9 0 0 1-15 6.7L3 16"></path></svg></div><h3>Loading...</h3></div>`;
       try{renderCards(await(await fetch(API)).json(),'view-container');}
-      catch{c.innerHTML=`<div class="empty"><div class="empty-glyph">⚠️</div><h3>Connection failed</h3><p>Make sure Spring Boot is running on port 8080.</p></div>`;}
+      catch{c.innerHTML=`<div class="empty"><div class="empty-glyph" style="stroke:var(--red)"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div><h3>Connection failed</h3><p>Make sure Spring Boot is running on port 8080.</p></div>`;}
     }
     async function updateReview(){
       const id=document.getElementById('u-id').value;
